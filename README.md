@@ -45,18 +45,49 @@ Magsac is the state of the art according to the recent study Yin et.al."[Image M
 
 ![IMW-Challenge](img/ransacs2.png)
 
+# Requirements
+
+- Python 3
+- CMake 2.8.12 or higher
+- Eigen3
+- libgcc-ng
+- OpenCV 3.4
+- A modern compiler with C++17 support
+
+# Preparation for conda env.
+Activate conda env
+```
+conda activate torch
+```
+Install cmake
+```
+conda install -c conda-forge cmake
+```
+Install eigen3
+```
+conda install -c omnia eigen3
+```
+Install libgcc
+```
+conda install -c conda-forge libgcc-ng
+```
 
 # Installation
 
-To build and install `python_cpp_example`, clone or download this repository and then, from within the repository, run:
+To build and install `python_cpp_example`, clone or download this repository, copy `estimators.h` from the `magsac` repo, update `cmake` file, and run `setpu.py install` as follows:
 
 ```bash
-python3 ./setup.py install
+git clone https://github.com/cognitiveRobot/magsac.git
+git clone https://github.com/cognitiverobot/pymagsac
+cp magsac/include/estimators.h pymagsac/src/pymagsac/include/
+sed -i 's@set(CMAKE_CXX_STANDARD 14)@set(CMAKE_CXX_STANDARD 17)@' pymagsac/CMakeLists.txt
+cd pymagsac
+python setup.py install
 ```
 
 or
 
-```bash
+```bash (not tested.)
 pip3 install .
 ```
 
@@ -65,19 +96,20 @@ pip3 install .
 ```python
 import pymagsac
 H, mask = pymagsac.findHomography(src_pts, dst_pts, 3.0)
+
+#  findFundamentalMatrix arguments:
+	# (x1y1: numpy.ndarray[float64], 
+	# x2y2: numpy.ndarray[float64], 
+	# use_magsac_plus_plus: bool=True, 
+	# sigma_th: float=1.0, 
+	# conf: float=0.99, 
+	# max_iters: int=10000, 
+	# partition_num: int=5)
 F, mask = pymagsac.findFundamentalMatrix(src_pts, dst_pts, 3.0)
 
 ```
 
 See also this [notebook](examples/example.ipynb)
-
-
-# Requirements
-
-- Python 3
-- CMake 2.8.12 or higher
-- OpenCV 3.4
-- A modern compiler with C++14 support
 
 
 # Acknowledgements
